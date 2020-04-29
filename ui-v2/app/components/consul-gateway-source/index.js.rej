@@ -1,0 +1,5 @@
+diff a/ui-v2/app/components/consul-gateway-source/index.js b/ui-v2/app/components/consul-gateway-source/index.js	(rejected hunks)
+@@ -3,2 +3 @@ import Component from '@ember/component';
+-export default Component.extend({
+-});
++export default Component.extend({});
