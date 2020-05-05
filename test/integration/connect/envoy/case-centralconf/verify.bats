@@ -54,3 +54,23 @@ load helpers
     must_match_in_prometheus_response localhost:1234 \
     '[\{,]envoy_http_conn_manager_prefix="upstream_s2_http"[,}]'
 }
+
+function get_envoy_cluster_config {
+  local HOSTPORT=$1
+  local CLUSTER_NAME=$2
+  run retry_default curl -s -f $HOSTPORT/config_dump
+  [ "$status" -eq 0 ]
+  echo "$output" | jq --raw-output "
+    .configs[1].dynamic_active_clusters[]
+    | select(.cluster.name|startswith(\"${CLUSTER_NAME}\"))
+    | .cluster
+  "
+}
+
+@test "s1 proxy should have been configured with passive_health_check" {
+  CLUSTER_CONFIG=$(get_envoy_cluster_config localhost:19000 s2.default.primary)
+  echo $CLUSTER_CONFIG
+
+  [ "$(echo $CLUSTER_CONFIG | jq --raw-output '.outlier_detection.consecutive_5xx')" = "4" ]
+  [ "$(echo $CLUSTER_CONFIG | jq --raw-output '.outlier_detection.interval')" = "22s" ]
+}
