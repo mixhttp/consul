@@ -47,8 +47,7 @@
 %app-view-content div > dl > dd {
   color: $gray-400;
 }
-[role='tabpanel'] > p:only-child,
-.template-error > div,
-%app-view-content > p:only-child {
+%app-view-error > div,
+%app-view-content-empty {
   @extend %frame-gray-500;
 }

@@ -36,6 +36,10 @@ main {
 %app-view > div > div {
   @extend %app-view-content;
 }
+%app-view > div.unauthorized,
+%app-view > div.error {
+  @extend %app-view-error;
+}
 %app-view header form {
   @extend %filter-bar;
 }
@@ -70,9 +74,7 @@ main {
   @extend %form-row;
 }
 [role='tabpanel'] > p:only-child,
-.template-error > div,
-%app-view-content > p:only-child,
-%app-view.empty > div {
+%app-view-content > p:only-child {
   @extend %app-view-content-empty;
 }
 [role='tabpanel'] > *:first-child {
